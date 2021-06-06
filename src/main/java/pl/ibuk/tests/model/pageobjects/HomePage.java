@@ -11,6 +11,7 @@ public class HomePage extends BasePage{
 
     public HomePage(WebDriver webDriver) {
         super(webDriver);
+        waitForPage(logoutButton);
     }
 
     public boolean isLogoutButtonVisible() {

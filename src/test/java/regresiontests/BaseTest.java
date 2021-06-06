@@ -3,7 +3,6 @@ package regresiontests;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import pl.ibuk.tests.core.properties.PropertiesNames;
 import pl.ibuk.tests.core.properties.ReadProperties;
 import pl.ibuk.tests.driver.config.WebDriverFactory;
@@ -27,7 +26,7 @@ public class BaseTest implements PropertiesNames {
     }
 
 
-    private void setupWebDriver() {
+    private void setupWebDriver() throws IOException {
         webDriver = WebDriverFactory.getWebBrowserDriver();
     }
 

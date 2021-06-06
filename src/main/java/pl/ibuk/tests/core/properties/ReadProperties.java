@@ -26,8 +26,7 @@ public class ReadProperties {
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
-        } finally {
-            inputStream.close();
+        } finally { inputStream.close();
         }
     }
     public Properties getProperties(){

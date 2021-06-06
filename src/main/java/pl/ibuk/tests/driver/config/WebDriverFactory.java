@@ -1,23 +1,33 @@
 package pl.ibuk.tests.driver.config;
 
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import pl.ibuk.tests.core.properties.PropertiesNames;
+import pl.ibuk.tests.core.properties.ReadProperties;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class WebDriverFactory implements SystemProperties {
 
     private static WebDriver webDriver;
     public static BrowserName browserName;
+    private static String firefoxLocalPath, chromeLocalPath;
+    private static int PAGE_LOAD_TIMEOUT = 20;
+    private static int IMPLICIT_WAIT = 30;
 
 
-    public static WebDriver getWebBrowserDriver() {
+    public static WebDriver getWebBrowserDriver() throws IOException {
         browserName = BrowserName.valueOf(BROWSER);
+        setupProperties();
 
         if(IS_REMOTE) {
             MutableCapabilities options = null;
@@ -30,17 +40,46 @@ public class WebDriverFactory implements SystemProperties {
                     options = new FirefoxOptions();
                     ((FirefoxOptions) options).setHeadless(true);
                     break;
+                default:
+                    options  = new ChromeOptions();
+                    ((ChromeOptions) options).setHeadless(true);
             }
 
             try {
-                System.out.println(REMOTE_HUB_URL);
                 webDriver = new RemoteWebDriver(new URL(REMOTE_HUB_URL), options);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
-        webDriver.manage().window().setSize(new Dimension(1024,768));
+
+        else {
+            switch (browserName) {
+                case CHROME:
+                    System.out.println("karol" + chromeLocalPath);
+                    System.setProperty("webdriver.chrome.driver", chromeLocalPath);
+                    webDriver = new ChromeDriver();
+                    break;
+                case FIREFOX:
+                    System.setProperty("webdriver.gecko.driver", firefoxLocalPath);
+                    webDriver = new FirefoxDriver();
+                    break;
+                default:
+                    System.setProperty("webdriver.chrome.driver", chromeLocalPath);
+                    webDriver = new ChromeDriver();
+                    break;
+            }
+        }
+        webDriver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT,TimeUnit.SECONDS);
+        webDriver.manage().window().maximize();
         return webDriver;
+    }
+
+    private static void setupProperties() throws IOException {
+        Properties properties = new ReadProperties().getProperties();
+
+        firefoxLocalPath = properties.getProperty(PropertiesNames.FIREFOX_DRIVER);
+        chromeLocalPath = properties.getProperty(PropertiesNames.CHROME_DRIVER);
     }
 
     public enum BrowserName {

@@ -24,11 +24,7 @@ public class LoginPage extends BasePage{
 
     public LoginPage(WebDriver webDriver) {
         super(webDriver);
-    }
-
-    public boolean isPageOpened() {
-        driverWait.waitForPageToLoad();
-        return heading.getText().equalsIgnoreCase("Logowanie");
+        waitForPage(heading);
     }
 
     private void inputEmail(String email) {
