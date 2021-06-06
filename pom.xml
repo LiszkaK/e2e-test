@@ -22,11 +22,11 @@
                     <systemProperties>
                         <property>
                             <name>browser</name>
-                            <value>firefox</value>
+                            <value>chrome</value>
                         </property>
                         <property>
                             <name>remote</name>
-                            <value>no</value>
+                            <value>yes</value>
                         </property>
                         <property>
                             <name>environment</name>

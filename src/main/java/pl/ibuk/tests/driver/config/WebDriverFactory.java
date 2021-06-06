@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import pl.ibuk.tests.core.properties.PropertiesNames;
 import pl.ibuk.tests.core.properties.ReadProperties;
 
@@ -72,7 +73,10 @@ public class WebDriverFactory implements SystemProperties {
         webDriver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
         webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT,TimeUnit.SECONDS);
         webDriver.manage().window().maximize();
-        return webDriver;
+        EventFiringWebDriver eventFiringDriver = new EventFiringWebDriver(webDriver);
+        TestListener eventListener = new TestListener();
+        eventFiringDriver.register(eventListener);
+        return eventFiringDriver;
     }
 
     private static void setupProperties() throws IOException {
