@@ -20,6 +20,7 @@ public class LoginTest extends BaseTest{
     public void loginPositiveTest() {
         webDriver.get(loginPageUrl);
         LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.closeCookies();
         HomePage homePage = loginPage.loginToIbuk(userEmail, userPassword);
         Assert.assertTrue(homePage.isLogoutButtonVisible());
     }

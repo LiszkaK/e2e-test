@@ -16,7 +16,9 @@ public class DriverWait {
         javascriptExecutor = ((JavascriptExecutor) webDriver);
     }
 
-    public void waitUntil(ExpectedCondition<?> expectedCondition) { waitUntil(expectedCondition, DRIVER_WAIT_TIMEOUT); }
+    public void waitUntil(ExpectedCondition<?> expectedCondition) {
+        waitUntil(expectedCondition, DRIVER_WAIT_TIMEOUT);
+    }
 
     public void waitUntil(ExpectedCondition<?> expectedCondition, int timeoutSeconds) {
         new WebDriverWait(webDriver, timeoutSeconds).until(expectedCondition);

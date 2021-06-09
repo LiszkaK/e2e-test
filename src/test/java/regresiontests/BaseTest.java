@@ -6,18 +6,21 @@ import org.testng.annotations.AfterClass;
 import pl.ibuk.tests.core.properties.PropertiesNames;
 import pl.ibuk.tests.core.properties.ReadProperties;
 import pl.ibuk.tests.driver.config.WebDriverFactory;
+import pl.ibuk.tests.helpers.DriverWait;
 
 import java.io.IOException;
 import java.util.Properties;
 
 
 public class BaseTest implements PropertiesNames {
-    public WebDriver webDriver;
-    public String applicationUrl, userEmail, userPassword, loginPageUrl;
+    protected WebDriver webDriver;
+    protected DriverWait driverWait;
+    protected String applicationUrl, userEmail, userPassword, loginPageUrl, registerPageUrl;
 
     public void setUpTestConfig(ITestContext iTestContext) throws IOException {
         setupProperties();
         setupWebDriver();
+        this.driverWait = new DriverWait(webDriver);
     }
 
     @AfterClass(alwaysRun = true)
@@ -37,6 +40,7 @@ public class BaseTest implements PropertiesNames {
         this.userEmail = properties.getProperty(PropertiesNames.USER_EMAIL);
         this.userPassword = properties.getProperty(PropertiesNames.USER_PASSWORD);
         this.loginPageUrl = properties.getProperty(PropertiesNames.URL) + "logowanie.html";
+        this.registerPageUrl = properties.getProperty(PropertiesNames.URL) + "rejestracja.html";
     }
 
 }
