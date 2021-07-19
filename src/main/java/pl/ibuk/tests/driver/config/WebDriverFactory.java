@@ -31,7 +31,7 @@ public class WebDriverFactory implements SystemProperties {
         setupProperties();
 
         if(IS_REMOTE) {
-            MutableCapabilities options = null;
+            MutableCapabilities options;
             switch (browserName) {
                 case CHROME:
                     options  = new ChromeOptions();
@@ -42,8 +42,7 @@ public class WebDriverFactory implements SystemProperties {
                     ((FirefoxOptions) options).setHeadless(true);
                     break;
                 default:
-                    options  = new ChromeOptions();
-                    ((ChromeOptions) options).setHeadless(true);
+                    throw new IllegalArgumentException("Browser: " + browserName + "does not  exist");
             }
 
             try {
@@ -56,7 +55,6 @@ public class WebDriverFactory implements SystemProperties {
         else {
             switch (browserName) {
                 case CHROME:
-                    System.out.println("karol" + chromeLocalPath);
                     System.setProperty("webdriver.chrome.driver", chromeLocalPath);
                     webDriver = new ChromeDriver();
                     break;
@@ -65,9 +63,7 @@ public class WebDriverFactory implements SystemProperties {
                     webDriver = new FirefoxDriver();
                     break;
                 default:
-                    System.setProperty("webdriver.chrome.driver", chromeLocalPath);
-                    webDriver = new ChromeDriver();
-                    break;
+                    throw new IllegalArgumentException("Browser: " + browserName + "does not  exist");
             }
         }
         webDriver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
