@@ -41,14 +41,17 @@ public class RegisterTest extends BaseTest {
                 testUser.getEmailAddress(),
                 userPassword);
 
-        openUrlFromEmailAndAssertThatPageHaveExpectedTitle();
+        confirmRegisterByOpeningConfirmationLink();
+        assertThatRegisterConfirmationMessageIsVisible();
     }
 
-    private void openUrlFromEmailAndAssertThatPageHaveExpectedTitle() throws ApiException {
+    private void confirmRegisterByOpeningConfirmationLink() throws ApiException {
         String confirmationLink = mailSlurpHelper.getConfirmationLink(userInbox);
         webDriver.get(confirmationLink);
+    }
+
+    private void assertThatRegisterConfirmationMessageIsVisible() {
         RegisterConfirmationPage registerConfirmationPage = new RegisterConfirmationPage(webDriver);
         assertThat(registerConfirmationPage.isRegisterConfirmationPageVisible(CONFIRMATION_MESSAGE)).isTrue();
-
     }
 }
