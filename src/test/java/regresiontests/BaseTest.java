@@ -15,7 +15,7 @@ import java.util.Properties;
 
 @Listeners(TestListener.class)
 public class BaseTest implements PropertiesNames {
-    public static WebDriver webDriver;
+    protected WebDriver webDriver;
     protected DriverWait driverWait;
     protected String applicationUrl, userEmail, userPassword, loginPageUrl, registerPageUrl;
 
