@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite thread-count="1" verbose="1" name="Smoke test suite" parallel="tests">
+
+    <test name="LoginTest">
+        <classes>
+            <class name="regresiontests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="RegisterTest">
+        <classes>
+            <class name="regresiontests.RegisterTest"/>
+        </classes>
+    </test>
+</suite>
