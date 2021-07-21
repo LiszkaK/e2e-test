@@ -9,7 +9,7 @@ import pl.ibuk.tests.model.pageobjects.LoginPage;
 
 import java.io.IOException;
 
-public class LoginTest extends BaseTest{
+public class LoginTest extends BaseTest {
 
     @BeforeTest
     public void setup(ITestContext iTestContext) throws IOException {

@@ -70,7 +70,7 @@ public class WebDriverFactory implements SystemProperties {
         webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT,TimeUnit.SECONDS);
         webDriver.manage().window().maximize();
         EventFiringWebDriver eventFiringDriver = new EventFiringWebDriver(webDriver);
-        TestListener eventListener = new TestListener();
+        EventListenerWrapper eventListener = new EventListenerWrapper();
         eventFiringDriver.register(eventListener);
         return eventFiringDriver;
     }
