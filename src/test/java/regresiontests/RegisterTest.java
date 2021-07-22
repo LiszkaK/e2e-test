@@ -2,6 +2,7 @@ package regresiontests;
 
 import com.mailslurp.client.ApiException;
 import com.mailslurp.models.Inbox;
+import io.qameta.allure.Description;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -30,6 +31,7 @@ public class RegisterTest extends BaseTest {
     }
 
     @Test
+    @Description("Test Description: Register new user test")
     public void registerTest() throws ApiException {
         webDriver.get(registerPageUrl);
         RegisterPage registerPage = new RegisterPage(webDriver);

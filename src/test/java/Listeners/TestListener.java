@@ -1,5 +1,6 @@
 package Listeners;
 
+import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,11 @@ import java.io.IOException;
 public class TestListener implements ITestListener {
     private static final String SOURCE_FOLDER_SCREENSHOT = "target/screenshots/";
 
+    @Attachment(value = "Page screenshot", type = "image/png")
+    public byte[] saveScreenshotPngForAllure(WebDriver webDriver) {
+        return ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES);
+    }
+
     @Override
     public void onTestStart(ITestResult iTestResult) {
 
@@ -24,18 +30,21 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        System.out.println("Test success  : " + iTestResult.getInstanceName() + "." + iTestResult.getName());
+        System.out.println("Test success  : " + getClassAndTestNameFromTest(iTestResult));
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        System.out.println("Test failed  : " + iTestResult.getInstanceName() + "." + iTestResult.getName());
-        takeScreenShot(iTestResult);
+        System.out.println("Test failed  : " + getClassAndTestNameFromTest(iTestResult));
+        Object currentClass = iTestResult.getInstance();
+        WebDriver webDriver = ((BaseTest) currentClass).getWebDriver();
+        takeScreenShot(webDriver, iTestResult);
+        saveScreenshotPngForAllure(webDriver);
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-        System.out.println("Test skipped  : " + iTestResult.getInstanceName() + "." + iTestResult.getName());
+        System.out.println("Test skipped  : " + getClassAndTestNameFromTest(iTestResult));
     }
 
     @Override
@@ -53,13 +62,11 @@ public class TestListener implements ITestListener {
 
     }
 
-    public void takeScreenShot(ITestResult iTestResult) {
+    private void takeScreenShot(WebDriver webDriver, ITestResult iTestResult) {
         System.out.println("Taking a screenshot");
-        Object currentClass = iTestResult.getInstance();
-        WebDriver webDriver = ((BaseTest) currentClass).getWebDriver();
 
         File scrFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-        String screenName = SOURCE_FOLDER_SCREENSHOT + iTestResult.getName() + ".png";
+        String screenName = SOURCE_FOLDER_SCREENSHOT + getClassAndTestNameFromTest(iTestResult) + ".png";
         File outputFile = new File(screenName);
         try {
             BufferedImage bufferedImage = ImageIO.read(scrFile);
@@ -68,6 +75,10 @@ public class TestListener implements ITestListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("screenshot was taken at: " + outputFile.getAbsolutePath());
+        System.out.println("screenshot captured: " + outputFile.getAbsolutePath());
+    }
+
+    private String getClassAndTestNameFromTest(ITestResult iTestResult) {
+        return iTestResult.getInstanceName() + "." + iTestResult.getName();
     }
 }

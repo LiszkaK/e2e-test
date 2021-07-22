@@ -1,5 +1,8 @@
 package regresiontests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeTest;
@@ -17,6 +20,8 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
+    @Description("Test Description: Login test with correct username and correct password.")
+    @Severity(SeverityLevel.BLOCKER)
     public void loginPositiveTest() {
         webDriver.get(loginPageUrl);
         LoginPage loginPage = new LoginPage(webDriver);
